@@ -10,7 +10,8 @@ from .views import (
     RecentRegistrationsView,
     MemberAttendanceCalendarView,
     ReceptionistUpcomingExpirationsView,
-    MemberAttachImageView
+    MemberAttachImageView,
+    DietplanListView
 )
 
 urlpatterns = [
@@ -25,4 +26,5 @@ urlpatterns = [
     path("me/callander/",MemberAttendanceCalendarView.as_view(), name="member-callander" ),
     path("<int:pk>/attach-image/", MemberAttachImageView.as_view(), name="member-attach-image"),
     path("upcoming-expirations/", ReceptionistUpcomingExpirationsView.as_view(), name="upcoming-expirations"),
+    path("dietplan/", DietplanListView.as_view(), name = "DietplanListView")
 ]

@@ -1,10 +1,18 @@
 from rest_framework import generics, status
 from rest_framework.response import Response
 from django.shortcuts import get_object_or_404
-from accounts.permissions import IsManager
+from rest_framework.views import APIView
+from accounts.permissions import IsManager,IsTrainer
 from accounts.models import User
 from .serializers import StaffSerializer
+from rest_framework import status
+from .models import TrainerDietplan
+from .serializers import TrainerDietplanSerializer
 
+class TrainerDietplanView(generics.CreateAPIView):
+    queryset = TrainerDietplan.objects.all()
+    serializer_class = TrainerDietplanSerializer
+    permission_classes = [IsTrainer]
 
 class StaffCreateView(generics.CreateAPIView):
     queryset = User.objects.exclude(role="member")  

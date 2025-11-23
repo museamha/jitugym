@@ -31,6 +31,13 @@ class CheckInPagination(PageNumberPagination):
     page_size_query_param = "page_size"
     max_page_size = 30
 
+from staff.models import TrainerDietplan
+from staff.serializers import TrainerDietplanSerializer
+
+class DietplanListView(generics.ListAPIView):
+    queryset = TrainerDietplan.objects.all()
+    serializer_class = TrainerDietplanSerializer
+
 class TrainerUpdateMemberView(generics.RetrieveUpdateAPIView):
     queryset = MemberProfile.objects.all()
     serializer_class = TrainerUpdateSerializer
@@ -132,8 +139,6 @@ class RecentCheckInsView(generics.ListAPIView):
         queryset = self.get_queryset()
         page = self.paginate_queryset(queryset)
         serializer = self.get_serializer(page, many=True)
-
-        # Using user.is_active
         active_count = MemberProfile.objects.filter(user__is_active=True).count()
         inactive_count = MemberProfile.objects.filter(user__is_active=False).count()
 
@@ -248,4 +253,3 @@ class MemberAttachImageView(generics.UpdateAPIView):
     permission_classes = [IsReceptionist]
     http_method_names = ["put"]
     lookup_field = "pk"
-    
