@@ -46,3 +46,7 @@ class StaffDeleteView(generics.DestroyAPIView):
 
         user.delete()
         return Response({"detail": "Staff account deleted."}, status=status.HTTP_204_NO_CONTENT)
+class TrainerDietplanDeleteView(generics.DestroyAPIView):
+    queryset = TrainerDietplan.objects.all()
+    serializer_class = TrainerDietplanSerializer
+    permission_classes = [IsTrainer]
