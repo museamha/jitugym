@@ -139,6 +139,7 @@ STATIC_ROOT = os.path.join(BASE_DIR, "staticfiles")
 
 CORS_ALLOWED_ORIGINS = [
     "https://jitugym.com",
+    "https://jitugym.vercel.app",
     "http://localhost:3001",
     "http://localhost:3002",
     "http://localhost:3003",
