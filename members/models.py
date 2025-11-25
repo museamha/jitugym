@@ -58,18 +58,6 @@ class MemberProfile(models.Model):
     def save(self, *args, **kwargs):
         now = timezone.now()
 
-        # Auto-increment ID if not set
-        if not self.id:
-            with transaction.atomic():
-                used_ids = list(MemberProfile.objects.values_list("id", flat=True).order_by("id"))
-                new_id = 1
-                for uid in used_ids:
-                    if uid == new_id:
-                        new_id += 1
-                    else:
-                        break
-                MemberProfile.objects.filter(id__gte=new_id).update(id=F("id")+1)
-                self.id = new_id
 
         # Calculate end_date based on package and start_date
         if self.package_type in PACKAGE_DURATION and self.start_date and not self.end_date:
