@@ -32,7 +32,6 @@ PACKAGE_DURATION = {
 
 
 class MemberProfile(models.Model):
-    id = models.IntegerField(primary_key=True)
     user = models.OneToOneField(User, on_delete=models.CASCADE, related_name="profile")
     weight = models.FloatField(null=True, blank=True)
     height = models.FloatField(null=True, blank=True)
@@ -48,7 +47,7 @@ class MemberProfile(models.Model):
  
 
     def generate_unique_barcode(self):
-        """Generates a unique numeric barcode for the member."""
+
         while True:
             code = str(random.randint(1000000000, 9999999999))
             if not MemberProfile.objects.filter(barcode=code).exists():
