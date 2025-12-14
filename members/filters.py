@@ -2,19 +2,23 @@ import django_filters
 from .models import MemberProfile
 from django.utils import timezone
 class MemberProfileFilter(django_filters.FilterSet):
-    user__is_active = django_filters.BooleanFilter()
+    active = django_filters.BooleanFilter(
+        field_name="user__is_active")
     class Meta:
         model = MemberProfile
-        fields = {
-            "user__phone_number": ["exact", "icontains"],  
-            "user__first_name": ["icontains"],
-            "user__last_name": ["icontains"],
-            "barcode": ["exact", "icontains"],
-            "start_date": ["exact", "gte", "lte"],
-            "end_date": ["exact", "gte", "lte"],
-            "package_type": ["exact"],
+        fields = [
+            "active",
+            "package_type",
+            "start_date",
+            "end_date",
+            "barcode",
+            "user__phone_number",  
+            "user__first_name",
+            "user__last_name"
+            
+        ]
 
-        }
+
     def filter_left_days(self, queryset, name, value):
         today = timezone.now().date()
         return queryset.filter(end_date__date=today + timezone.timedelta(days=value))
