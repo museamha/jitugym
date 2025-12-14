@@ -156,15 +156,27 @@ class RecentCheckInSerializer(serializers.ModelSerializer):
         return None
 
 class MemberImageAttachSerializer(serializers.ModelSerializer):
+    first_name = serializers.CharField(required=False)
+    last_name = serializers.CharField(required=False)
+    age = serializers.IntegerField(required=False)
+    weight = serializers.FloatField(required=False)
+    height = serializers.FloatField(required=False)
     class Meta:
         model = MemberProfile
-        fields = ["image"]
-        extra_kwargs = {"image": {"write_only": True}}
-
+        fields = [
+            "image",
+            "first_name",
+            "last_name",
+            "age",
+            "weight",
+            "height",
+        ]
+        extra_kwargs = {
+            "image": {"write_only": True, "required": False},
+        }
     def update(self, instance, validated_data):
         from cloudinary.uploader import upload
-
-        image = validated_data.get("image")
+        image = validated_data.pop("image", None)
         if image:
             upload_result = upload(
                 image,
@@ -173,5 +185,14 @@ class MemberImageAttachSerializer(serializers.ModelSerializer):
                 overwrite=True,
             )
             instance.image_url = upload_result["secure_url"]
-            instance.save(update_fields=["image_url"])
+        for field in ["age", "weight", "height"]:
+            if field in validated_data:
+                setattr(instance, field, validated_data[field])
+        user = instance.user
+        if "first_name" in validated_data:
+            user.first_name = validated_data["first_name"]
+        if "last_name" in validated_data:
+            user.last_name = validated_data["last_name"]
+        user.save()
+        instance.save()
         return instance

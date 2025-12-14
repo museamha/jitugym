@@ -28,3 +28,5 @@ urlpatterns = [
     path("upcoming-expirations/", ReceptionistUpcomingExpirationsView.as_view(), name="upcoming-expirations"),
     path("dietplan/", DietplanListView.as_view(), name = "DietplanListView")
 ]
+# list expired 
+# editable

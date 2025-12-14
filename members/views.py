@@ -64,6 +64,7 @@ class ListMembersView(generics.ListAPIView):
     search_fields = ["phone_number", "first_name", "last_name", "barcode"]
     ordering_fields = ["start_date", "end_date", "left_days"] 
     pagination_class = MemberListPagination
+
     def get_queryset(self):
         now = timezone.now().date()
         queryset = MemberProfile.objects.all()
